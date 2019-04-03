@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  docker:
+    - image: circleci/node:latest
+
+  steps:
+    - checkout
+
+    # Restore any cached node_modules from the last
+    # build, if package.json has the same checksum.
+    - restore_cache:
+        keys:
+          - dependencies-{{ checksum "package.json" }}
+          - dependencies-
+
+    - run:
+        name: Install dependencies
+        command: npm ci
+
+    # Save the content of node_modules to cache for the next build.
+    - save_cache:
+        key: dependencies-{{ checksum "package.json" }}
+        paths:
+          - node_modules
+
+    - run:
+        name: Test suite
+        command: npm test -- --ci --reporters=jest-junit --runInBand --coverage
+        environment:
+          JEST_JUNIT_OUTPUT: test-results/jest/results.xml
+
+    - run:
+        name: Upload code coverage
+        command: bash <(curl -s https://codecov.io/bash) -f ./coverage/lcov.info
+
+    - store_test_results:
+        path: test-results
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - 'test'
