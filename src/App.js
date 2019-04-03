@@ -1,59 +1,108 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import { default as getClassification, getTotals } from './rules';
+import layouts from './layouts';
+
 import Header from './components/Header';
 import Module from './components/Module';
+import Template from './components/Template';
 
-class App extends Component {
+const { localStorage } = window;
+
+const toEmptyLayout = template =>
+	layouts.get(template).map(({ credits, isDissertation }) => ({
+		credits,
+		isDissertation,
+		mark: 0,
+	}));
+
+export default class App extends Component {
+	state = {
+		template: 'Post-2018 full time',
+		marks: toEmptyLayout('Post-2018 full time'),
+	};
+
+	componentDidMount = () => {
+		try {
+			const state = JSON.parse(localStorage.getItem('state'));
+			this.setState(state);
+		} catch (e) {
+			console.error('Failed to hydrate state from localStorage');
+		}
+	};
+
+	saveState = () => {
+		const { state } = this;
+		localStorage.setItem('state', JSON.stringify(state));
+		console.log(localStorage.getItem('state'));
+	};
+
+	handleTemplateChange = template => {
+		this.setState({ template, marks: toEmptyLayout(template) }, this.saveState);
+	};
+
+	handleMarkChange = (i, event) => {
+		const value = parseInt(event.target.value || '0', 10);
+		console.log({ value });
+		this.setState(
+			({ marks }) => ({
+				marks: marks.map((m, j) => (i === j ? { ...m, mark: value } : m)),
+			}),
+			this.saveState
+		);
+	};
+
 	render() {
+		const { template, marks } = this.state;
+		const classification = getClassification(marks);
+		const totals = getTotals(marks);
+
 		return (
 			<div>
 				<Header>SCME MSc award calculator</Header>
+				<div className="layouts">
+					{[...layouts.keys()].map((key, i) => (
+						<Template
+							active={template === key}
+							key={key}
+							onClick={() => this.handleTemplateChange(key)}
+						>
+							{key}
+						</Template>
+					))}
+				</div>
+				<hr />
 				<div className="row">
 					<div className="form column">
-						<p>
-							Use the 60-credit box for the dissertation mark, the 40-credit box
-							for the integrating module, and the 10-credit boxes for the
-							remaining modules.
-						</p>
-
-						<Module credits={60}>Dissertation</Module>
-						<Module credits={40}>Integrating module</Module>
-						<Module credits={10}>Core/optional module</Module>
-						<Module credits={10}>Core/optional module</Module>
-						<Module credits={10}>Core/optional module</Module>
-						<Module credits={10}>Core/optional module</Module>
-						<Module credits={10}>Core/optional module</Module>
-						<Module credits={10}>Core/optional module</Module>
-						<Module credits={10}>Core/optional module</Module>
+						{layouts.get(template).map((module, i) => (
+							<Module
+								key={i}
+								credits={module.credits}
+								value={marks[i].mark}
+								onChange={val => this.handleMarkChange(i, val)}
+							>
+								{module.label}
+							</Module>
+						))}
 					</div>
 
 					<div className="column">
-						<p>
-							Weighted average: <span className="weightedAverage" />
-						</p>
-						<p>
-							Credits less than 40: <span className="lt40" />
-						</p>
-						<p>
-							Credits less than 50: <span className="lt50" />
-						</p>
-						<p>
-							Credits greater than 50: <span className="gte50" />
-						</p>
-						<p>
-							Credits greater than 60: <span className="gte60" />
-						</p>
-						<p>
-							Credits greater than 70: <span className="gte70" />
-						</p>
+						<div className="results">
+							<h2>{classification}</h2>
 
-						<button type="button" name="update">
-							Update
-						</button>
-
-						<hr />
-
+							<p>Weighted average: {totals.weightedAverage.toFixed(2)}%</p>
+							<p>Credits less than 40: {totals.lt40}</p>
+							<p>Credits less than 50: {totals.lt50}</p>
+							<p>Credits greater than 50: {totals.gte50}</p>
+							<p>Credits greater than 60: {totals.gte60}</p>
+							<p>Credits greater than 70: {totals.gte70}</p>
+						</div>
+					</div>
+				</div>
+				<hr />
+				<footer className="row">
+					<div className="column">
 						<p>
 							Please use this site to calculate your likely degree result, based
 							on the marks you have accumulated to date and your estimates of
@@ -62,18 +111,13 @@ class App extends Component {
 							that all marks are provisional until ratified by the Examination
 							Board.
 						</p>
-					</div>
-				</div>
-				<footer className="row">
-					<div className="column">
 						<p>
 							Please address questions to{' '}
 							<a href="mailto:w.p.hughes@reading.ac.uk">Will Hughes</a>.
 						</p>
 						<p>
 							This is not an official resource, and is for informational
-							purposes only. Unfortunately, it seems that this script will not
-							run on iPhones with Safari. Apologies for this.
+							purposes only.
 						</p>
 						<p>
 							<a
@@ -95,5 +139,3 @@ class App extends Component {
 		);
 	}
 }
-
-export default App;

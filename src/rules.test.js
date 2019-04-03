@@ -2,145 +2,131 @@ import getClassification from './rules';
 
 let marks = [];
 
-test('Failure', () => {
-	marks = [
-		{ credits: 60, mark: 50, isDissertation: true },
-		{ credits: 40, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 55 },
-		{ credits: 10, mark: 35 },
-		{ credits: 10, mark: 36 },
-		{ credits: 10, mark: 36 },
-	];
+describe('Pre-2018', () => {
+	describe('Distinction', () => {
+		test('High', () => {
+			marks = [
+				{ credits: 60, mark: 70, isDissertation: true },
+				{ credits: 40, mark: 79 },
+				{ credits: 10, mark: 72 },
+				{ credits: 10, mark: 78 },
+				{ credits: 10, mark: 90 },
+				{ credits: 10, mark: 65 },
+				{ credits: 10, mark: 72 },
+				{ credits: 10, mark: 87 },
+				{ credits: 10, mark: 83 },
+				{ credits: 10, mark: 66 },
+			];
 
-	expect(getClassification(marks)).toBe('Fail');
-});
+			expect(getClassification(marks)).toBe('MSc Distinction');
+		});
 
-test('Pass', () => {
-	marks = [
-		{ credits: 60, mark: 50, isDissertation: true },
-		{ credits: 40, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 55 },
-		{ credits: 10, mark: 35 },
-		{ credits: 10, mark: 37 },
-		{ credits: 10, mark: 39 },
-	];
+		test('Bare', () => {
+			marks = [
+				{ credits: 60, mark: 69, isDissertation: true },
+				{ credits: 40, mark: 70 },
+				{ credits: 10, mark: 71 },
+				{ credits: 10, mark: 61 },
+				{ credits: 10, mark: 68 },
+				{ credits: 10, mark: 65 },
+				{ credits: 10, mark: 72 },
+				{ credits: 10, mark: 82 },
+				{ credits: 10, mark: 73 },
+				{ credits: 10, mark: 74 },
+			];
 
-	expect(getClassification(marks)).toBe('MSc Pass');
+			expect(getClassification(marks)).toBe('MSc Distinction');
+		});
+	});
 
-	marks = [
-		{ credits: 60, mark: 50, isDissertation: true },
-		{ credits: 40, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 50 },
-	];
+	describe('Merit', () => {
+		test('High', () => {
+			marks = [
+				{ credits: 60, mark: 67, isDissertation: true },
+				{ credits: 40, mark: 69 },
+				{ credits: 10, mark: 63 },
+				{ credits: 10, mark: 71 },
+				{ credits: 10, mark: 50 },
+				{ credits: 10, mark: 66 },
+				{ credits: 10, mark: 72 },
+				{ credits: 10, mark: 65 },
+				{ credits: 10, mark: 60 },
+				{ credits: 10, mark: 80 },
+			];
 
-	expect(getClassification(marks)).toBe('MSc Pass');
+			expect(getClassification(marks)).toBe('MSc Merit');
+		});
 
-	marks = [
-		{ credits: 60, mark: 60, isDissertation: true },
-		{ credits: 40, mark: 60 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 50 },
-		{ credits: 10, mark: 48 },
-		{ credits: 10, mark: 48 },
-		{ credits: 10, mark: 48 },
-		{ credits: 10, mark: 50 },
-	];
+		test('Bare', () => {
+			marks = [
+				{ credits: 60, mark: 61, isDissertation: true },
+				{ credits: 40, mark: 55 },
+				{ credits: 10, mark: 57 },
+				{ credits: 10, mark: 60 },
+				{ credits: 10, mark: 60 },
+				{ credits: 10, mark: 61 },
+				{ credits: 10, mark: 67 },
+				{ credits: 10, mark: 56 },
+				{ credits: 10, mark: 78 },
+				{ credits: 10, mark: 62 },
+			];
 
-	expect(getClassification(marks)).toBe('MSc Pass');
-});
+			expect(getClassification(marks)).toBe('MSc Merit');
+		});
+	});
 
-test('Merit', () => {
-	marks = [
-		{ credits: 60, mark: 60, isDissertation: true },
-		{ credits: 40, mark: 47 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-		{ credits: 10, mark: 65 },
-	];
+	describe('Pass', () => {
+		test('High', () => {
+			marks = [
+				{ credits: 60, mark: 58, isDissertation: true },
+				{ credits: 40, mark: 57 },
+				{ credits: 10, mark: 65 },
+				{ credits: 10, mark: 62 },
+				{ credits: 10, mark: 56 },
+				{ credits: 10, mark: 69 },
+				{ credits: 10, mark: 61 },
+				{ credits: 10, mark: 63 },
+				{ credits: 10, mark: 66 },
+				{ credits: 10, mark: 50 },
+			];
 
-	expect(getClassification(marks)).toBe('MSc Merit');
+			expect(getClassification(marks)).toBe('MSc Pass');
+		});
 
-	marks = [
-		{ credits: 60, mark: 50, isDissertation: true },
-		{ credits: 40, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 68 },
-		{ credits: 10, mark: 45 },
-	];
+		test('Bare', () => {
+			marks = [
+				{ credits: 60, mark: 55, isDissertation: true },
+				{ credits: 40, mark: 50 },
+				{ credits: 10, mark: 45 },
+				{ credits: 10, mark: 38 },
+				{ credits: 10, mark: 55 },
+				{ credits: 10, mark: 50 },
+				{ credits: 10, mark: 56 },
+				{ credits: 10, mark: 57 },
+				{ credits: 10, mark: 12 },
+				{ credits: 10, mark: 58 },
+			];
 
-	expect(getClassification(marks)).toBe('MSc Merit');
-});
+			expect(getClassification(marks)).toBe('MSc Pass');
+		});
+	});
 
-test('Distinction', () => {
-	marks = [
-		{ credits: 60, mark: 70 },
-		{ credits: 40, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-	];
+	describe('Fail', () => {
+		test('High', () => {
+			marks = [
+				{ credits: 60, mark: 55, isDissertation: true },
+				{ credits: 40, mark: 43 },
+				{ credits: 10, mark: 35 },
+				{ credits: 10, mark: 38 },
+				{ credits: 10, mark: 55 },
+				{ credits: 10, mark: 50 },
+				{ credits: 10, mark: 56 },
+				{ credits: 10, mark: 57 },
+				{ credits: 10, mark: 12 },
+				{ credits: 10, mark: 58 },
+			];
 
-	expect(getClassification(marks)).toBe('MSc Distinction');
-
-	marks = [
-		{ credits: 60, mark: 70 },
-		{ credits: 40, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 68 },
-		{ credits: 10, mark: 40 },
-	];
-
-	expect(getClassification(marks)).toBe('MSc Distinction');
-
-	marks = [
-		{ credits: 60, mark: 60 },
-		{ credits: 40, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 75 },
-		{ credits: 10, mark: 70 },
-		{ credits: 10, mark: 75 },
-		{ credits: 10, mark: 75 },
-		{ credits: 10, mark: 75 },
-		{ credits: 10, mark: 75 },
-	];
-
-	expect(getClassification(marks)).toBe('MSc Distinction');
+			expect(getClassification(marks)).toBe('Fail');
+		});
+	});
 });

@@ -76,7 +76,7 @@ export function MScDistinction({
 	return gte70 >= 90;
 }
 
-export function generateTotals(marks) {
+export function getTotals(marks) {
 	const modules = marks
 		.map(m => ({ ...m, creditxMarks: m.credits * m.mark || 0 }))
 		.map(m => ({
@@ -114,6 +114,7 @@ export function generateTotals(marks) {
 			gte50: 0,
 			gte60: 0,
 			gte70: 0,
+			dissertation: 0,
 		}
 	);
 
@@ -121,7 +122,7 @@ export function generateTotals(marks) {
 }
 
 export default marks => {
-	const totals = generateTotals(marks);
+	const totals = getTotals(marks);
 	if (MScDistinction(totals)) {
 		return 'MSc Distinction';
 	}

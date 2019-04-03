@@ -12,13 +12,35 @@ input,
 label {
 	display: inline;
 }
+.layouts {
+	margin-bottom: 2rem;
+}
+@media (min-width: 40rem) {
+	.results {
+		text-align: right;
+	}
+}
 input[type='number'] {
-	display: block;
-	width: 100%;
+	width: 10rem;
+	margin-right: 2rem;
 }
 footer {
 	color: #999;
 }
 p {
 	margin-bottom: 0.5em;
+}
+
+.Template {
+	padding: 1em;
+	cursor: pointer;
+}
+
+.Template.active {
+	font-weight: bold;
+	outline: 1px solid lightgrey;
+}
+
+.Template:hover {
+	background: lightgrey;
 }
