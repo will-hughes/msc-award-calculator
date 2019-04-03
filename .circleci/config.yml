@@ -7,22 +7,9 @@ jobs:
     steps:
       - checkout
 
-      # Restore any cached node_modules from the last
-      # build, if package.json has the same checksum.
-      - restore_cache:
-          keys:
-            - dependencies-{{ checksum "package.json" }}
-            - dependencies-
-
       - run:
           name: Install dependencies
-          command: npm ci
-
-      # Save the content of node_modules to cache for the next build.
-      - save_cache:
-          key: dependencies-{{ checksum "package.json" }}
-          paths:
-            - node_modules
+          command: yarn install --frozen-lockfile
 
       - run:
           name: Test suite
