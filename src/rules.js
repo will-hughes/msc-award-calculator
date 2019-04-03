@@ -1,12 +1,22 @@
 export function MScPass({ dissertation, lt40, lt50, weightedAverage, gte50 }) {
 	// Always failure cases
-	if (dissertation < 50) return false;
-	if (lt40 > 30) return false;
-	if (lt50 > 55) return false;
-	if (weightedAverage < 48) return false;
+	if (dissertation < 50) {
+		return false;
+	}
+	if (lt40 > 30) {
+		return false;
+	}
+	if (lt50 > 55) {
+		return false;
+	}
+	if (weightedAverage < 48) {
+		return false;
+	}
 
 	// If they're above the weighted average threshold, they're through
-	if (weightedAverage >= 50) return true;
+	if (weightedAverage >= 50) {
+		return true;
+	}
 
 	// Otherwise check the dominant quality
 	return gte50 >= 90;
@@ -14,13 +24,23 @@ export function MScPass({ dissertation, lt40, lt50, weightedAverage, gte50 }) {
 
 export function MScMerit({ dissertation, lt40, lt50, weightedAverage, gte60 }) {
 	// Always failure cases
-	if (dissertation < 50) return false;
-	if (lt40 > 0) return false;
-	if (lt50 > 55) return false;
-	if (weightedAverage < 58) return false;
+	if (dissertation < 50) {
+		return false;
+	}
+	if (lt40 > 0) {
+		return false;
+	}
+	if (lt50 > 55) {
+		return false;
+	}
+	if (weightedAverage < 58) {
+		return false;
+	}
 
 	// If they're above the weighted average threshold, they're through
-	if (weightedAverage >= 60) return true;
+	if (weightedAverage >= 60) {
+		return true;
+	}
 
 	// Otherwise check the dominant quality
 	return gte60 >= 90;
@@ -34,13 +54,23 @@ export function MScDistinction({
 	gte70,
 }) {
 	// Always failure cases
-	if (dissertation < 60) return false;
-	if (lt40 > 0) return false;
-	if (lt50 > 55) return false;
-	if (weightedAverage < 68) return false;
+	if (dissertation < 60) {
+		return false;
+	}
+	if (lt40 > 0) {
+		return false;
+	}
+	if (lt50 > 55) {
+		return false;
+	}
+	if (weightedAverage < 68) {
+		return false;
+	}
 
 	// If they're above the weighted average threshold, they're through
-	if (weightedAverage >= 70) return true;
+	if (weightedAverage >= 70) {
+		return true;
+	}
 
 	// Otherwise check the dominant quality
 	return gte70 >= 90;
@@ -92,8 +122,14 @@ export function generateTotals(marks) {
 
 export default marks => {
 	const totals = generateTotals(marks);
-	if (MScDistinction(totals)) return 'MSc Distinction';
-	if (MScMerit(totals)) return 'MSc Merit';
-	if (MScPass(totals)) return 'MSc Pass';
+	if (MScDistinction(totals)) {
+		return 'MSc Distinction';
+	}
+	if (MScMerit(totals)) {
+		return 'MSc Merit';
+	}
+	if (MScPass(totals)) {
+		return 'MSc Pass';
+	}
 	return 'Fail';
 };
